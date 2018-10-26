@@ -1,5 +1,9 @@
 # swoft mongo db pool
 
+```
+composer require alukaa/swoft-mongo-pool
+```
+
 ## config 
 create new file in config/properties. named mongo.php
 ```php
