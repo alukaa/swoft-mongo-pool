@@ -2,7 +2,7 @@
     "name": "alukaa/swoft-mongo-pool",
     "description": "mongodb colletion based on swoft",
     "type": "library",
-    "minimum-stability": "stable",
+    "minimum-stability": "master",
     "require": {
         "php": ">=7.0",
         "ext-swoole": ">=2.1",
