@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\MongoDB;
+namespace SwoftMongo\MongoDB;
 
 
 class MongoDBQueryBuilder

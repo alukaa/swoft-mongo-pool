@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\MongoDB\Config;
+namespace SwoftMongo\Config;
 
 
 use Swoft\Bean\Annotation\{Bean, Value};

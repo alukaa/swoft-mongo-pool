@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\MongoDB;
+namespace SwoftMongo\MongoDB;
 
 use MongoDB\BSON\ObjectId;
 use MongoDB\Driver\{
