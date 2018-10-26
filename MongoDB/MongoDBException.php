@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MongoDB;
+namespace App\Lib\MongoDB;
 
 
 class MongoDBException extends \Exception

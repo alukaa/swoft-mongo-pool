@@ -1,18 +1,15 @@
 <?php
 
-namespace App\MongoDB;
+namespace App\Lib\MongoDB;
 
 use MongoDB\BSON\ObjectId;
-use MongoDB\Driver\BulkWrite;
-use MongoDB\Driver\Command;
-use MongoDB\Driver\Exception\AuthenticationException;
-use MongoDB\Driver\Exception\ConnectionException;
-use MongoDB\Driver\Exception\Exception;
-use MongoDB\Driver\Exception\InvalidArgumentException;
-use MongoDB\Driver\Exception\RuntimeException;
-use MongoDB\Driver\Manager;
-use MongoDB\Driver\Query;
-use MongoDB\Driver\WriteConcern;
+use MongoDB\Driver\{
+    BulkWrite, Command, Manager, Query, WriteConcern
+};
+use MongoDB\Driver\Exception\{
+    AuthenticationException, ConnectionException, Exception, InvalidArgumentException, RuntimeException
+};
+
 use Swoft\App;
 use Swoft\Db\Bean\Annotation\Connection;
 use Swoft\Db\Driver\DriverType;
@@ -125,25 +122,28 @@ class MongoDBConnection extends AbstractConnection
      * 返回分页数据，默认每页10条
      *
      * @param string $namespace
+     * @param int $limit
+     * @param int $currentPage
      * @param array $filter
      * @param array $options
      * @return array
      */
-    public function execQueryPagination(string $namespace, array $filter, array $options = [])
+    public function execQueryPagination(string $namespace, int $limit = 10, int $currentPage = 0, array $filter = [], array $options = [])
     {
         if(!empty($filter['_id']) && !($filter['_id'] instanceof ObjectId)){
             $filter['_id'] = new ObjectId($filter['_id']);
         }
         // 查询数据
+        $data = [];
         $result = [];
 
         //每次最多返回10条记录
         if (!isset($options['limit']) || (int)$options['limit']<=0) {
-            $options['limit'] = 10;
+            $options['limit'] = $limit;
         }
 
         if (!isset($options['skip']) || (int)$options['skip']<=0) {
-            $options['skip'] = 0;
+            $options['skip'] = $currentPage*$limit;
         }
 
         try {
@@ -153,8 +153,14 @@ class MongoDBConnection extends AbstractConnection
             foreach ($cursor as $document) {
                 $document = (array)$document;
                 $document['_id'] = (string)$document['_id'];
-                $result[] = $document;
+                $data[] = $document;
             }
+
+            $result['totalCount'] = $this->count($namespace, $filter);
+            $result['currentPage'] = $currentPage;
+            $result['perPage'] = $limit;
+            $result['list'] = $data;
+
         } catch (\Exception $e) {
             App::error($e->getFile().$e->getLine().$e->getMessage());
         } catch (Exception $e) {

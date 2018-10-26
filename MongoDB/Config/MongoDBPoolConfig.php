@@ -1,10 +1,9 @@
 <?php
 
-namespace App\MongoDB\Config;
+namespace App\Lib\MongoDB\Config;
 
 
-use Swoft\Bean\Annotation\Bean;
-use Swoft\Bean\Annotation\Value;
+use Swoft\Bean\Annotation\{Bean, Value};
 use Swoft\Pool\PoolConfigInterface;
 
 /**

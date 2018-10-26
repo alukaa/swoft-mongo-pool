@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MongoDB;
+namespace App\Lib\MongoDB;
 
 
 use MongoDB\Driver\Exception\Exception;
@@ -37,18 +37,20 @@ class Mongo
      * 返回满足filer的分页数据
      *
      * @param string $namespace
+     * @param int $limit
+     * @param int $currentPage
      * @param array $filter
      * @param array $options
      * @return array
      */
-    public static function fetchPagination(string $namespace, array $filter = [], array $options = []): array
+    public static function fetchPagination(string $namespace, int $limit, int $currentPage, array $filter = [], array $options = []): array
     {
         try {
             /**
              * @var $collection MongoDBConnection
              */
             $collection = self::getConnection();
-            return $collection->execQueryPagination($namespace, $filter, $options);
+            return $collection->execQueryPagination($namespace, $limit, $currentPage, $filter, $options);
         } catch (\Exception  $e) {
             App::error($e->getFile().$e->getLine().$e->getMessage());
             return [];

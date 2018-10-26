@@ -1,17 +1,14 @@
 <?php
 
-namespace App\MongoDB;
+namespace App\Lib\MongoDB;
 
-use App\MongoDB\Config\MongoDBPoolConfig;
-use Swoft\Bean\Annotation\Inject;
-use Swoft\Bean\Annotation\Pool;
+use App\Lib\MongoDB\Config\MongoDBPoolConfig;
+use Swoft\Bean\Annotation\{Inject, Pool};
 use Swoft\Db\Bean\Collector\ConnectionCollector;
 use Swoft\Db\Driver\DriverType;
 use Swoft\Db\Exception\DbException;
 use Swoft\Exception\ConnectionException;
-use Swoft\Pool\ConnectionInterface;
-use Swoft\Pool\PoolConfigInterface;
-use Swoft\Pool\PoolInterface;
+use Swoft\Pool\{ConnectionInterface, PoolConfigInterface, PoolInterface};
 
 
 /**
