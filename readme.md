@@ -21,3 +21,11 @@ return [
 
 ```
 add ``` 'mongo' => require __DIR__ . DS . 'mongo.php',``` to ```config/properties/app.php```
+
+
+## useage
+
+```php
+\SwoftMongo\MongoDB\Mongo 下面的静态方法直接使用
+ eg: $list = Mongo::fetchPagination('article', 10, 0, ['author' => $author]);
+```
