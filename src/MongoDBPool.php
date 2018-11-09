@@ -1,8 +1,8 @@
 <?php
 
-namespace SwoftMongo\MongoDB;
+namespace SwoftMongo;
 
-use App\Lib\MongoDB\Config\MongoDBPoolConfig;
+use SwoftMongo\Config\MongoDBPoolConfig;
 use Swoft\Bean\Annotation\{Inject, Pool};
 use Swoft\Db\Bean\Collector\ConnectionCollector;
 use Swoft\Db\Driver\DriverType;

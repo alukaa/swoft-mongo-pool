@@ -1,6 +1,6 @@
 <?php
 
-namespace SwoftMongo\MongoDB;
+namespace SwoftMongo;
 
 
 use MongoDB\Driver\Exception\Exception;

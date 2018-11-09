@@ -1,6 +1,6 @@
 <?php
 
-namespace SwoftMongo\MongoDB;
+namespace SwoftMongo;
 
 
 class MongoDBException extends \Exception
