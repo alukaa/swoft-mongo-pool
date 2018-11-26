@@ -16,11 +16,25 @@ return [
     'host'             => 'mongodb',
     'port'             => 27017,
     'dbName'           => 'test',
-    'authMechanism'    => 'SCRAM-SHA-256'
+    'authMechanism'    => 'SCRAM-SHA-256',
+    //设置复制集,没有不设置
+    //'replica'          => 'rs0'
+    
 ];
-
 ```
-add ``` 'mongo' => require __DIR__ . DS . 'mongo.php',``` to ```config/properties/app.php```
+
+## config/properties/app.php 添加
+```
+mongo' => require __DIR__ . DS . 'mongo.php,
+'components' => [
+        'custom' => [
+            // Your package namespace.
+            'SwoftMongo\\',
+
+        ],
+    ]
+```
+
 
 
 ## useage
