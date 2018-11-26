@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\MongoDB;
+namespace SwoftMongo;
 
 use SwoftMongo\Config\MongoDBPoolConfig;
 use Swoft\Bean\Annotation\{Inject, Pool};
