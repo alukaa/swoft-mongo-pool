@@ -1,7 +1,8 @@
 <?php
 
-namespace SwoftMongo;
+namespace App\Lib\MongoDB;
 
+use SwoftMongo\Config\MongoDBPoolConfig;
 use MongoDB\BSON\ObjectId;
 use MongoDB\Driver\{
     BulkWrite, Command, Manager, Query, WriteConcern
@@ -14,6 +15,7 @@ use Swoft\App;
 use Swoft\Db\Bean\Annotation\Connection;
 use Swoft\Db\Driver\DriverType;
 use Swoft\Pool\AbstractConnection;
+use SwoftMongo\MongoDBException;
 
 
 /**
@@ -41,19 +43,30 @@ class MongoDBConnection extends AbstractConnection
             /**
              * http://php.net/manual/zh/mongodb-driver-manager.construct.php
              */
+            /**
+             * @var $poolConfig MongoDBPoolConfig
+             */
             $poolConfig = $this->pool->getPoolConfig();
             $uri = sprintf(
-                'mongodb://%s:%s@%s:%d',
+                'mongodb://%s:%s@%s:%d/%s',
                 $poolConfig->getUserName(),
                 $poolConfig->getPassword(),
                 $poolConfig->getHost(),
-                $poolConfig->getPort()
+                $poolConfig->getPort(),
+                $poolConfig->getDatabaseName()
             );
-            $this->connection = new Manager($uri);
+
+            //数据集
+            $replica = $poolConfig->getReplica();
+            if ($replica) {
+                $urlOptions['replicaSet'] = $replica;
+            }
+
+            $this->connection = new Manager($uri, $urlOptions);
         } catch (InvalidArgumentException $e) {
-            throw MongoDBException::managerError('mongo 连接参数错误');
+            throw MongoDBException::managerError('mongo 连接参数错误:'.$e->getMessage());
         } catch (RuntimeException $e) {
-            throw MongoDBException::managerError('mongo uri格式错误');
+            throw MongoDBException::managerError('mongo uri格式错误:'.$e->getMessage());
         }
     }
 
@@ -63,7 +76,7 @@ class MongoDBConnection extends AbstractConnection
      */
     public function reconnect()
     {
-       $this->createConnection();
+        $this->createConnection();
     }
 
     /**
@@ -77,7 +90,7 @@ class MongoDBConnection extends AbstractConnection
     {
         try {
             $command = new Command(['ping' => 1]);
-            $this->connection->executeCommand('admin', $command);
+            $this->connection->executeCommand($this->pool->getPoolConfig()->getDatabaseName(), $command);
             return true;
         } catch (\Throwable $e) {
             return $this->catchMongoException($e);
@@ -345,7 +358,7 @@ class MongoDBConnection extends AbstractConnection
                 throw MongoDBException::managerError('mongo argument exception: '.$e->getMessage());
             }
             case ($e instanceof AuthenticationException): {
-                throw MongoDBException::managerError('mongo数据库连接授权失败');
+                throw MongoDBException::managerError('mongo数据库连接授权失败:'.$e->getMessage());
             }
             case ($e instanceof ConnectionException): {
                 /**

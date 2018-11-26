@@ -79,6 +79,12 @@ class MongoDBPoolConfig implements PoolConfigInterface
      */
     protected $driver = 'MongoDB';
 
+    /**
+     * @Value(name="${config.mongo.replica}", env="${MONGO_REPLICA}")
+     * @var string string 数据集，默认为空
+     */
+    protected $replica = '';
+
 
     /**
      * @return int
@@ -337,5 +343,21 @@ class MongoDBPoolConfig implements PoolConfigInterface
     public function getMaxWaitTime(): int
     {
         throw new \Exception(__CLASS__.__FUNCTION__.'not complete');
+    }
+
+    /**
+     * @return string
+     */
+    public function getReplica(): string
+    {
+        return $this->replica;
+    }
+
+    /**
+     * @param string $replica
+     */
+    public function setReplica(string $replica)
+    {
+        $this->replica = $replica;
     }
 }

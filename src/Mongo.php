@@ -76,8 +76,8 @@ class Mongo
             $collection = self::getConnection();
             return $collection->insert($namespace, $data);
         } catch (\Exception $e) {
-           App::error($e->getFile().$e->getLine().$e->getMessage());
-           return false;
+            App::error($e->getFile().$e->getLine().$e->getMessage());
+            return false;
         }
     }
 
